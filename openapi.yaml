@@ -1,0 +1,49 @@
+from IPython.core import interactiveshell
+!pip install pyyaml
+import yaml
+# 저장할 데이터
+data = {
+    openapi:3.0.3
+    info:
+      title: Oscars winners
+      description: ChatGPT plugin for getting a list of the winners of the Oscars.
+      version: '1.0.0'
+    servers:
+      -url: http://nomadcoders.co/
+    paths:
+      /winners:
+        get:
+          operationId: getWinners
+          summary: Gets the list of the winners of the Oscars awards for the year specified on the parameters, else it will return the winners of this year.
+          parameters:
+            - in:query
+              name: year
+              schema:
+                type: integer
+              required: False
+              description: The year
+          responses:
+            "200":
+              description: OK
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/getWinnerResponse'
+    components:
+      schemas:
+        getWinnersResponse:
+          type: object
+          properties:
+            winners:
+              type: array
+              items:
+                type: string
+              description: The list of winners by name.              
+}
+
+# YAML 파일 경로
+file_path = 'openapi.yaml'
+# 데이터를 YAML 파일로 저장
+with open(file_path, 'w') as file:
+    yaml.dump(data, file)
+print('YAML 파일이 성공적으로 생성되었습니다.')
